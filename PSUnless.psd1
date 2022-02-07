@@ -30,7 +30,7 @@ Author = 'codewario'
 Copyright = '(c) codewario. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell module containing an "unless" function.'
+Description = 'A dumb module I created for some reason that adds an `unless` function to PowerShell, which feels like a keyword in practice.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
@@ -75,7 +75,7 @@ FunctionsToExport = @('unless')
 CmdletsToExport = @()
 
 # Variables to export from this module
-VariablesToExport = '*'
+VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @()
