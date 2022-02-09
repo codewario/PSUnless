@@ -30,35 +30,33 @@ PowerShell function to test for negative conditions. Runs the *RunIfFalseConditi
 
 See **Functional Syntax (default)** under the [Syntax](#syntax) section for proper usage syntax. Understanding the actual `function` signature is not useful in this regard, though this is included in the same section for informational purposes.
 
-### Basic Usage
+**Basic Usage**
 
 Basically, use `unless` where you would use `if`, but for negative conditions instead. For example:
 
-```powershell
-$name = 'Mandark'
+    $name = 'Mandark'
 
-unless( $name -eq 'Susan' ) {
-    'My name is not Susan'
-}
-```
+    unless( $name -eq 'Susan' ) {
+        'My name is not Susan'
+    }
+
 
 Technically, the parentheses are not required for the condition, but they are needed when using any operators. Because of this, and the fact that PowerShell's built-in `if` statement already requires the use of parentheses in all cases, it is recommended to pass conditionals in as a group-expression out of idiomacy.
 
-#### A Note on `[ScriptBlock]` Placement
+**A Note on `[ScriptBlock]` Placement**
 Because this is not a true language keyword, if you prefer to start your code blocks on the following line of code you would need to escape the last character of the previous line with a backtick:
 
-```powershell
-$name = 'Mandark'
+    $name = 'Mandark'
 
-unless( $name -eq 'Susan' ) ` # <======= Added a backtick before the newline
-{
-    'My name is not Susan'
-}
-```
+    unless( $name -eq 'Susan' ) ` # <======= Added a backtick before the newline
+    {
+        'My name is not Susan'
+    }
+
 
 Otherwise, the expression ends at the new line and PowerShell will error out. It's an unfortunate side-effect, but unavoidable outside of implementing as a proper keyword. If you have a problem with using backticks for multi-line statements, it is recommended to start your `[ScriptBlock]` on the same line of code as the previous condition, and end the block on the same line as a following `else`-style clause.
 
-### Else Clauses
+**Else Clauses**
 `unless` supports the optional chaining of `else`-style clauses as well, such as when adding `else` or `elseif` clauses to an `if` statement. They are used by appending one of the `keywords` after a preceeding `[ScriptBlock]`. With the exception of `else` itself, all other `else`-style clauses may be specified multiple times. In general, the `elseif` and `elseunless` clauses will execute their `[ScriptBlock]` if their condition is satisfied, while the `else` clause will only execute its `[ScriptBlock]` if none of the preceeding blocks were run.
 
 There are three supported `else`-style clauses:
@@ -78,22 +76,20 @@ There are three supported `else`-style clauses:
   - *Description:* Runs the *RunIfNothingElseDid* `[ScriptBlock]` if all previous conditional clauses in the chain did not evaluate favorably. It may only be used once in a chain as the last item. Additional clauses after `else` will throw an error.
   - *Rules:* If used, it must come immediately after a `[ScriptBlock]`, and provide a `[ScriptBlock]` of its own to run.
 
-#### Chaining
+**Chaining**
 
 Below is an example of using "unless" with each available chained clause. This example tests for a negative $condition,
 followed by additional conditions if each previous clause did not evaluate favorably.
 
-```powershell
-unless ( $condition ) {
-    'Do this thing if $condition is $false'
-} elseif ( $condition2 ) {
-    'Do this thing if $condition2 is $true'
-} elseunless ( $condition3 ) {
-    'Do this thing if $condition3 is $false'
-} else {
-    'Do this thing if none of the other conditional clauses ran'
-}
-```
+    unless ( $condition ) {
+        'Do this thing if $condition is $false'
+    } elseif ( $condition2 ) {
+        'Do this thing if $condition2 is $true'
+    } elseunless ( $condition3 ) {
+        'Do this thing if $condition3 is $false'
+    } else {
+        'Do this thing if none of the other conditional clauses ran'
+    }
 
 ## EXAMPLES
 
@@ -141,7 +137,7 @@ unless ( $condition ) {
 ### -Arguments
 All arguments to be passed to `unless`. Essentially replaces the usage of `$args` within the `function` code itself.
 
-The use of this parameter itself is not particularly useful, but understanding the arguments which are passed in is. The full syntax will be explained under this parameter as everything pertinent to usage is passed in through it. You should never need to specify `-Arguments` as a named parameter as this `function` is designed to take all inputs positionally.
+The use of this parameter itself is not particularly useful, but understanding the arguments which are passed in is.  You should never need to specify `-Arguments` as a named parameter as this `function` is designed to take all inputs positionally.
 
 Please read the [Description](#description) for full usage information, and read the [Inputs](#inputs) and [Outputs](#outputs) sections for a less verbose explanation of what goes in and gets returned from this `function`.
 
@@ -155,7 +151,6 @@ Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
-Accept Value From Remaining Arguments: True
 ```
 
 ### CommonParameters

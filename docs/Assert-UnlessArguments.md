@@ -27,7 +27,7 @@ Confirms that the arguments passed in match the syntax passed into "unless". Par
 
 4th     - If 3rd is 'else', must be a \[scriptblock\] and the final argument. Otherwise, this must be a \[bool\] condition.
 
-5th     - If 3rd is 'elseif', or 'elseunless', this must be a \[scriptblock\].\
+5th     - If 3rd is 'elseif', or 'elseunless', this must be a \[scriptblock\].
 
 Repeat 3-5 when dealing with chained conditionals
 

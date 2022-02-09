@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Assert-UnlessArguments</command:name>
+      <command:verb>Assert</command:verb>
+      <command:noun>UnlessArguments</command:noun>
+      <maml:description>
+        <maml:para>Assert that "unless" arguments have been provided correctly. Not intended for use outside this module.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Confirms that the arguments passed in match the syntax passed into "unless". Parsing rules below (by position):</maml:para>
+      <maml:para>1st     - Must be a [bool] or evaluate to one.</maml:para>
+      <maml:para>2nd     - Must be a [scriptblock].</maml:para>
+      <maml:para>3rd     - Optional "keyword". Must be a [string] of 'else', 'elseif', or 'elseunless'.</maml:para>
+      <maml:para>4th     - If 3rd is 'else', must be a [scriptblock] and the final argument. Otherwise, this must be a [bool] condition.</maml:para>
+      <maml:para>5th     - If 3rd is 'elseif', or 'elseunless', this must be a [scriptblock].</maml:para>
+      <maml:para>Repeat 3-5 when dealing with chained conditionals</maml:para>
+      <maml:para>This is not necessarily how the logic needs to work for the parser, but the above is expected to be the end result. For example, this doesn't need to validate bools, because any value can be represented as a bool, even $null. Since this could be any data type anything passed in should be considered valid, so no check is performed. If it is due to a malformed command, one of the subsequent checks should raise an error.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Assert-UnlessArguments</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Arguments</maml:name>
+          <maml:description>
+            <maml:para></maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Array</command:parameterValue>
+          <dev:type>
+            <maml:name>Array</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Arguments</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Array</command:parameterValue>
+        <dev:type>
+          <maml:name>Array</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Assert-UnlessArguments $args</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>unless</command:name>
+      <command:verb>unless</command:verb>
+      <command:noun></command:noun>
+      <maml:description>
+        <maml:para>A `function` to test for negative conditions. Designed to feel like a language keyword.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>PowerShell function to test for negative conditions. Runs the RunIfFalseCondition `[ScriptBlock]` if the condition is not satisfied. Supports standalone evaluations as well as chaining conditionals with `else`-style clauses. This `function` was designed to feel like a language keyword when using it.</maml:para>
+      <maml:para>See Functional Syntax (default) under the Syntax (#syntax)section for proper usage syntax. Understanding the actual `function` signature is not useful in this regard, though this is included in the same section for informational purposes. Basic Usage Basically, use `unless` where you would use `if`, but for negative conditions instead. For example:</maml:para>
+      <maml:para>    $name = 'Mandark'</maml:para>
+      <maml:para>    unless( $name -eq 'Susan' ) {         'My name is not Susan'     }</maml:para>
+      <maml:para></maml:para>
+      <maml:para>Technically, the parentheses are not required for the condition, but they are needed when using any operators. Because of this, and the fact that PowerShell's built-in `if` statement already requires the use of parentheses in all cases, it is recommended to pass conditionals in as a group-expression out of idiomacy. A Note on `[ScriptBlock]` Placement Because this is not a true language keyword, if you prefer to start your code blocks on the following line of code you would need to escape the last character of the previous line with a backtick:</maml:para>
+      <maml:para>    $name = 'Mandark'</maml:para>
+      <maml:para>    unless( $name -eq 'Susan' ) ` # &lt;======= Added a backtick before the newline     {         'My name is not Susan'     }</maml:para>
+      <maml:para></maml:para>
+      <maml:para>Otherwise, the expression ends at the new line and PowerShell will error out. It's an unfortunate side-effect, but unavoidable outside of implementing as a proper keyword. If you have a problem with using backticks for multi-line statements, it is recommended to start your `[ScriptBlock]` on the same line of code as the previous condition, and end the block on the same line as a following `else`-style clause. Else Clauses `unless` supports the optional chaining of `else`-style clauses as well, such as when adding `else` or `elseif` clauses to an `if` statement. They are used by appending one of the `keywords` after a preceeding `[ScriptBlock]`. With the exception of `else` itself, all other `else`-style clauses may be specified multiple times. In general, the `elseif` and `elseunless` clauses will execute their `[ScriptBlock]` if their condition is satisfied, while the `else` clause will only execute its `[ScriptBlock]` if none of the preceeding blocks were run.</maml:para>
+      <maml:para>There are three supported `else`-style clauses:</maml:para>
+      <maml:para>- elseunless   - Usage: `elseunless ( $conditional ) { RunIfFalseCondition }`   - Description: Tests for a negative condition, and runs the proceeding RunIfFalseCondition `[ScriptBlock]` if the condition is satisfied. Made to function similarly to the built-in `elseif" clause.   - Rules: If used, it must come immediately after a `[ScriptBlock]`, and provide a [ScriptBlock] of its own to run. </maml:para>
+      <maml:para>- elseif   - Usage: `elseif ( $conditional ) { RunIfTrueCondition }`   - Description: Tests for an affirmative condition, and runs the proceeding RunIfTrueCondition `[ScriptBlock]` if the condition is satisfied. Made to function similarly to built-in `elseif` clauses. May be used multiple times when chaining clauses.   - Rules: If used, it must come immediately after a `[ScriptBlock]`, and provide a `[ScriptBlock]` of its own to run.</maml:para>
+      <maml:para>- else   - Usage: `else { RunIfNothingElseDid }`   - Description: Runs the RunIfNothingElseDid `[ScriptBlock]` if all previous conditional clauses in the chain did not evaluate favorably. It may only be used once in a chain as the last item. Additional clauses after `else` will throw an error.   - Rules: If used, it must come immediately after a `[ScriptBlock]`, and provide a `[ScriptBlock]` of its own to run. Chaining Below is an example of using "unless" with each available chained clause. This example tests for a negative $condition, followed by additional conditions if each previous clause did not evaluate favorably.</maml:para>
+      <maml:para>    unless ( $condition ) {         'Do this thing if $condition is $false'     } elseif ( $condition2 ) {         'Do this thing if $condition2 is $true'     } elseunless ( $condition3 ) {         'Do this thing if $condition3 is $false'     } else {         'Do this thing if none of the other conditional clauses ran'     }</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>unless</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Arguments</maml:name>
+          <maml:description>
+            <maml:para>All arguments to be passed to `unless`. Essentially replaces the usage of `$args` within the `function` code itself.</maml:para>
+            <maml:para>The use of this parameter itself is not particularly useful, but understanding the arguments which are passed in is.  You should never need to specify `-Arguments` as a named parameter as this `function` is designed to take all inputs positionally.</maml:para>
+            <maml:para>Please read the Description (#description) for full usage information, and read the [Inputs](#inputs) and [Outputs](#outputs)sections for a less verbose explanation of what goes in and gets returned from this `function`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Array</command:parameterValue>
+          <dev:type>
+            <maml:name>Array</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Arguments</maml:name>
+        <maml:description>
+          <maml:para>All arguments to be passed to `unless`. Essentially replaces the usage of `$args` within the `function` code itself.</maml:para>
+          <maml:para>The use of this parameter itself is not particularly useful, but understanding the arguments which are passed in is.  You should never need to specify `-Arguments` as a named parameter as this `function` is designed to take all inputs positionally.</maml:para>
+          <maml:para>Please read the Description (#description) for full usage information, and read the [Inputs](#inputs) and [Outputs](#outputs)sections for a less verbose explanation of what goes in and gets returned from this `function`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Array</command:parameterValue>
+        <dev:type>
+          <maml:name>Array</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Array</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The first two arguments are required in order: Position 1: The `[bool]` condition to evaluate Position 2: `[ScriptBlock]` to run if the preceeding condition returns `$false`</maml:para>
+          <maml:para>The next three arguments are optional and can be repeated in sequence, but all are required together in order for chaining `else`-logic unless otherwise noted: Position 3: Chaining operator, must be one of `else`, `elseif`, or `elseunless`. Position 4: A `[bool]` condition to evaluate, unless Position 3 was `else` in which case skip to Position 5 . Position 5: `[ScriptBlock]` to run if the preceeding condition was favorably evaluated. If Position 3 was `else`, this `[ScriptBlock]` must be the last argument.</maml:para>
+          <maml:para>3, 4, and 5 can be repeated as many times as you need to chain an additional `else`-style evaluation.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>This `function` does not output anything on its own, aside from emitting error information. However, since the caller must provide their own `[ScriptBlock]`, that code may return an `[object]` of some type.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Implementation Notes for the Curious</maml:para>
+        <maml:para>This function was inspired by languages such as `ruby` which have negation keywords in addition to `if` statements and negation operators. It was fun to write even if this would be better served as a language keyword.</maml:para>
+        <maml:para>This `function` does not implement idiomatic PowerShell parameter handling to preserve the "keyword" feel of its invocation. Negation of the initial condition is simple, but allowing chained `else` clauses made things more difficult, since those parameters may repeat. PowerShell does not support repeating parameters within `param()`, and prefers to steer developers toward array-based arguments instead. Normally this is a good design choice, but was incompatible with the experience I was seeking for this particular `function`. There may be a solution to be had in `DynamicParam`, but `DynamicParam` blocks are difficult to debug, and the end result when running `Get-Help` with some dynamic parameters left much to be desired.</maml:para>
+        <maml:para>`unless` was not intended to have `cmdlet` status, but there were some inconsistencies with using the `$args` array when compared to other collections. Defining the `-Arguments` parameter essentially removed any issues experienced, but as ValueFromRemainingArguments was needed to preserve the keyword feel during invocation, this bumps the `function` to Advanced Function status, a `cmdlet` in script form.</maml:para>
+        <maml:para>`elseif` feels a bit strange for an `unless` function if you aren't used to calling negative evaluators like this, but this was included since other languages which support a native `unless` statement do support chaining `elseif` clauses, just as their `if` statements support `elseunless` logic. Unfortunately, a module can't change the behavior of the `if` keyword, so you can't use the `elseunless` clause with a proper `if` statement.</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------- 1. Basic usage example --------------------</maml:title>
+        <dev:code>$name = 'Mandark'
+
+unless( $name -eq 'Susan' ) {
+    'My name is not Susan'
+}</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------- 2. Test for truthiness --------------------</maml:title>
+        <dev:code># "-EA 0" is shorthand for -ErrorAction SilentlyContinue
+unless( Get-Process msedge -EA 0 ) {
+  Write-Warning 'msedge is not currently running'
+}</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>----------------------- 3. Else chaining -----------------------</maml:title>
+        <dev:code>unless ( $condition ) {
+    'Do this thing if $condition is $false'
+} elseif ( $condition2 ) {
+    'Do this thing if $condition2 is $true'
+} elseunless ( $condition3 ) {
+    'Do this thing if $condition3 is $false'
+} else {
+    'Do this thing if none of the other conditional clauses ran'
+}</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+</helpItems>
