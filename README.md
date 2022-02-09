@@ -21,6 +21,6 @@ Basically, use `unless` where you would use `if`, but for negative conditions in
         'My name is not Susan'
     }
 
-It also supports chaining `else`-style clauses like `else`, `elseif`, and `elseunless`. More information on the `unless` function os located in [docs/Function-Unless.md](docs/Function-Unless.md).
+It also supports chaining `else`-style clauses like `else`, `elseif`, and `elseunless`. More information on the `unless` function is located in [docs/Function-Unless.md](docs/Function-Unless.md).
 
 You can also view the same information in PowerShell with `Get-Help unless`.
