@@ -31,6 +31,22 @@ Use `unless` like how you would use `if`, but for negative conditions instead. I
 
 Technically, the parentheses are optional when evaluating truthiness of a single variable, but the use of the **group-expression operator** `()` is needed when using any logical operators. Because of this, and the fact that PowerShell's built-in `if` statement already requires the use of parentheses, it is recommended to pass conditionals in as a **group-expression**.
 
+Note that because this is not a true language keyword, if you prefer to start your code blocks on the following line
+of code you would need to escape the last character of the previous line with a backtick:
+
+```powershell
+$name = 'Mandark'
+
+unless( $name -eq 'Susan' ) ` # <======= Added a backtick before the newline
+{
+    'My name is not Susan'
+}
+```
+
+Otherwise, the expression ends at the new line and PowerShell will error out. It's an unfortunate side-effect, but
+unavoidable outside of implementing a proper keyword. If you have a problem with using backticks for multi-line statements,
+it is recommended to start your `[ScriptBlock]` on the same line of code.
+
 ## Else Clauses
 `unless` supports the optional chaining of `else`-style clauses as well, such as when adding `else` or `elseif` clauses to an `if` statement. They are used by appending one of the "keywords" after a preceeding `[ScriptBlock]`. With the exception of `else` itself, all other `else`-style clauses may be specified multiple times. In general, the `elseif` and `elseunless` clauses will execute their `[Scriptblock]` if their condition is satisfied, while the `else` clause will only execute its `[ScriptBlock]`
 

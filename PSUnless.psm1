@@ -22,17 +22,6 @@ Function Assert-UnlessArguments {
             'The number of required arguments to ''unless'' is 2.'
         )
     }
-    Remove-Variable isOdd -EA SilentlyContinue
-
-    # Check each argument. By position (not index):
-    #   1st     - Must be a [bool].
-    #   2nd     - Must be a [scriptblock].
-    #   3rd     - Optional "keyword". Must be a [string] of 'else', 'elseif', or 'elseunless'.
-    #   4th     - If 3rd is 'else', must be a [scriptblock] and the final argument.
-    #             Otherwise, this must be a [bool] condition.
-    #   5th     - If 3rd is 'elseif', or 'elseunless', this must be a [scriptblock].
-    #
-    #   Repeat 3rd through 5th when dealing with chained conditionals
 
     $pos = 0
     $expectedTokenType = 'Boolean'
@@ -46,6 +35,9 @@ Function Assert-UnlessArguments {
 
         if ( $pos -gt 1 ) {
 
+            # Note on the below comments
+            # SETUP: no judgement is passed for that case but logic is performed for setting up further evaluations
+            # ASSERT: checks for a parsing violation and throws an error if one has occurred
             switch ( $arg ) {
 
                 # ASSERT: Cannot provide more arguments after the 'else' [scriptblock]
@@ -68,7 +60,10 @@ Function Assert-UnlessArguments {
                 }
 
                 # SETUP: Get the arg type for non-null arguments
-                $arg {
+                # Note: "default" case always runs at the end regardless of placement so can't be used here.
+                # Previously directly compared to $arg itself (esentially $arg -eq $arg) to
+                # prevent unnecessary expression eval, but some scriptblocks trip this up.
+                { $true } {
                     $tokenType = $arg.GetType().Name
                 }
 
@@ -114,12 +109,15 @@ Function unless {
     # Check the parameters and make sure the syntax is correct before actually evaluating anything
     Assert-UnlessArguments $Arguments
 
-    # Generate a string to run the evaluation
+    # Generate code to run the evaluation
     $sb = [StringBuilder]::new($Arguments.Count)
 
-    # Start with first two since they are guaranteed (invoking this function would be the "keyword")
+    # Start with second two since they are guaranteed ("keyword" provided "first" implicitly by calling the function)
+    # Must not forget to [bool]$condition when generating code comparing it, as $condition will really be the object
+    # which was passed in and will get ToString()'d. This is why we still need to prefix a [bool] with a $ in the same
+    # places, as [bool].ToString() returns "True" or "False", not "$True" or "$False".
     $condition, $block, $remaining = $Arguments
-    [void]$sb.AppendLine("if( !`$$condition ) {
+    [void]$sb.AppendLine("if( !`$$([bool]$condition) ) {
         $block
     }")
 
@@ -149,7 +147,7 @@ Function unless {
 
                 $condition, $block, $remaining = $remaining
 
-                $newline = "elseif( `$$condition ) {
+                $newline = "elseif( `$$([bool]$condition) ) {
                     $block
                 }"
                 break
@@ -159,7 +157,7 @@ Function unless {
 
                 $condition, $block, $remaining = $remaining
 
-                $newline = "elseif( !`$$condition ) {
+                $newline = "elseif( !`$$([bool]$condition) ) {
                     $block
                 }"
                 break
